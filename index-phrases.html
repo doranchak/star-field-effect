@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+    
+    #controls {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      color: white;
+      background: rgba(0,0,0,0.7);
+      padding: 15px;
+      border-radius: 8px;
+    }
+    
+    #starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .name {
+      position: absolute;
+      color: white;
+      transform-style: preserve-3d;
+      pointer-events: none;
+      font-size: 40pt;
+      font-family:'Courier New', Courier, monospace;
+    }
+    
+    button {
+      background: #444;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px 0;
+    }
+    
+    button:hover {
+      background: #666;
+    }
+    
+    input {
+      width: 60px;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <div>
+      <label>Number of Names: <input type="number" id="numNames" value="100" min="1" max="1000"></label>
+    </div>
+    <button onclick="restartAnimation()">Restart</button>
+  </div>
+  <div id="starfield"></div>
+
+  <script>
+    // Sample names list
+    const names = [
+    "yes i've been playing a stickup robbery",
+"being different is probably because",
+"be as you are skipping very different",
+"probably isnt a super big difference",
+"president is probably a very nice guy",
+"probably in very efficient speakers",
+"i picked up fingers very easy to learn",
+"probably end up being a very risky bet",
+"principles are being betrayed by you",
+"begin to briefly pause and skip every",
+"year after snubbing everybody i like",
+"so i prefer black but is very baby fine",
+"graced by a fine likeness of tupper",
+"because i very rarely identify bobby",
+"for best bang buck i pay denver relief",
+"because i played kirby in every story",
+"its being sold back in february",
+"because printing is probably every",
+"reasonably differing perspective",
+"bring it back every year supposedly",
+"peak is in very different places",
+"ive been using it for playback speed",
+"picks up i never feel bad for staying",
+"appreciate you being very friendly",
+"carries before being supplanted",
+"best bang for buck defensive player",
+"over principles after being abused",
+"but i've been laying bricks for years",
+"probably vary in different species",
+"in every day by speculating brokers",
+"buying is affected by every players",
+"unlike very big pop star difference",
+"very fine frigates are blocked up",
+"public servant before being raised",
+"reaping is very easily countered",
+"is prepared for use by taking finely",
+"being beast in every playoff",
+"lineups before first pick everyday",
+"you can be arrested by being visible",
+"place every day by your being in it",
+"can be easily tripped by your finger",
+"yourself by and by i speak in perfect",
+"of every passerby reading in public",
+"be unaffected by people arriving",
+"if personal preference id say buy it",
+"as proven by us being perfect year",
+"apply since every baby is different",
+"your papers be falsifying evidence",
+"probably been years since i fired up",
+"painful by describing every step",
+"respect is purely driven by being",
+"any type of big bruins are perceived",
+"variety of apps being user friendly",
+"but i'd say a preference for big bikes",
+"causing everyone bred like rabbits",
+"single buyer pays a different price",
+"being supported by varys blackfyre",
+"but i prefer displaying of bee years",
+"if residency years before applying",
+"because ordering like venti frapps",
+"so keep rubberband effect in play",
+"bubble disappears if converting",
+"define previous rain perfectly",
+"by breastfeeding in public very far",
+"beasting everybody since february",
+"but everyone keeps saying rip brady",
+"never is any fair bit of deep blue sky",
+"bored very easily by generic stuff",
+"offspring can be very easily preyed",
+"app by since every baby is different",
+"yesterday by linking a forbes piece",
+"yes for creepy lisping but every day ",
+"i began by a defensive crust",
+"type of upgrade like a refinery",
+"server being backed up",
+"free drinks by saying i bet you a beer",
+"up in price every day by alberto keys",
+"by a supervening deity or by a belief",
+"be used conveying fiber by air blast",
+"yes boring adult kevin spacey",
+"intake under carbs for epilepsy",
+"if busy delivering entrees or a baby",
+"by being eaten alive by birds of prey",
+"i never buy a single bp bio yesterday",
+"pink bird special beverage",
+"probably because drinking it",
+"because of trying",
+"ping yourself and back",
+"and you're being first place",
+"picking at yourself",
+"and speculating for every",
+"taking advice yourself",
+"it's probably because dying",
+"paying it back yourself",
+"and be yourself acting",
+"because everyone talking",
+"said if youre talking",
+"and its four players",
+"you'd be paying first place",
+"and can give yourself",
+"living because it does",
+"because only friends",
+"rarely because I don't",
+"like casting around",
+"if you can't be replying",
+"personality and figure",
+"various plays being different",
+"is probably reducing",
+"if you're playing tracks",
+"being asked if you can't",
+"resting place before and",
+"your past and feeling",
+"for suspending reality",
+"at like very confusing",
+"probably use taking",
+"early because i don't",
+"if you're talking spine",
+"players can't give you",
+"years couldn't give",
+"never playing outside",
+"covers being played after",
+"picks but for learning",
+"and if you percent live",
+"perfect yourselves",
+"if you're playing decks",
+"and gives players to buy",
+"taking your friends",
+"you're playing very different",
+"yes if you're talking",
+"because it's never playing",
+"spend like you're starving",
+"because it's boring",
+"saying about preference",
+"it probably is a difference",
+"in fact i've probably used",
+"being said if you ever can't",
+"past and believe in your",
+"you can't be a diver",
+"advancing yourself",
+"playing forever",
+"supportable difference",
+"if you're slacking",
+"give your space",
+"bring back your friends",
+"asking for pictures",
+"playing for seven years",
+"sticking up for players",
+"but everyone is packed",
+"like you're acting",
+"backing of a present",
+"taking your devices",
+"you're talking evidence",
+"breaks if youre playing",
+"after previously speaking",
+"being at your place",
+"like a perfect ring sound",
+"plastering your face",
+"stick figure people",
+"decks I've been playing for",
+"back outside playing",
+"people driving cars",
+"probably because firing",
+"best place for buying"
+   ];
+
+const names2 = [
+      "Emma", "Liam", "Olivia", "Noah", "Ava", "Oliver", "Isabella", "William", "Sophia", "James",
+      "Charlotte", "Benjamin", "Amelia", "Lucas", "Mia", "Henry", "Harper", "Theodore", "Evelyn", "Jack",
+      "Miguel", "Sofia", "Daniel", "Luna", "Alexander", "Victoria", "David", "Elena", "Joseph", "Isabel",
+      "Yuki", "Hiroshi", "Mei", "Chen", "Wei", "Jin", "Aisha", "Mohammed", "Fatima", "Omar",
+      "Anna", "Ivan", "Natasha", "Dmitri", "Lars", "Hans", "Klaus", "Maria", "Giovanni", "Marco"
+    ];
+
+    
+    class NameStar {
+      constructor() {
+        this.reset();
+        this.element = document.createElement('div');
+        this.element.className = 'name';
+      }
+      
+      reset() {
+        this.x = (Math.random() - 0.5) * 2000;
+        this.y = (Math.random() - 0.5) * 2000;
+        this.z = Math.random() * 25000 + 1000;
+        this.name = names[Math.floor(Math.random() * names.length)];
+      }
+      
+      update() {
+        this.z -= Math.random() * 30 + 15
+        
+        if (this.z < 0) {
+          this.reset();
+        }
+        
+        const scale = 1000 / this.z;
+        const x = this.x * scale + window.innerWidth / 6;
+        const y = this.y * scale + window.innerHeight / 2;
+        
+        // Calculate opacity based on z position
+        const opacity = Math.min(Math.max((this.z - 100) / 1000, 0), 1);
+        // Calculate blur based on z position
+        const blur = Math.max((1000 - this.z) / 100, 0);
+        
+        this.element.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+        this.element.style.opacity = opacity;
+        this.element.style.filter = `blur(${blur}px)`;
+        this.element.textContent = this.name;
+      }
+    }
+    
+    let nameStars = [];
+    const starfield = document.getElementById('starfield');
+    
+    function initStarfield(count) {
+      // Clear existing stars
+      starfield.innerHTML = '';
+      nameStars = [];
+      
+      // Create new stars
+      for (let i = 0; i < count; i++) {
+        const nameStar = new NameStar();
+        nameStars.push(nameStar);
+        starfield.appendChild(nameStar.element);
+      }
+    }
+    
+    function animate() {
+      nameStars.forEach(star => star.update());
+      requestAnimationFrame(animate);
+    }
+    
+    function restartAnimation() {
+      const count = parseInt(document.getElementById('numNames').value);
+      initStarfield(Math.min(Math.max(count, 1), 1000));
+    }
+    
+    // Initial setup
+    restartAnimation();
+    animate();
+  </script>
+</body>
+</html>
